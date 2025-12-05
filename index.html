@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutorías Karen</title>
+  <style>
+    body { margin:0; font-family:'Segoe UI',sans-serif; background:#f8f4ff; color:#333; }
+    header { background:linear-gradient(135deg,#7b5cff,#9b8bff); color:white; padding:60px 20px;
+             text-align:center; border-bottom-left-radius:40px; border-bottom-right-radius:40px; }
+    h1 { font-size:3rem; margin:0; font-weight:bold; }
+    .section { background:white; max-width:1000px; margin:30px auto; padding:40px; border-radius:20px;
+               box-shadow:0 4px 20px rgba(0,0,0,0.1); }
+    h2 { color:#6a56ff; margin-top:0; font-size:2rem; }
+    .product-card { background:#fff; padding:20px; border-radius:16px; box-shadow:0 3px 12px rgba(0,0,0,0.1);
+                    margin-bottom:20px; }
+    .price { font-size:1.4rem; color:#6a56ff; font-weight:bold; }
+    .buy-btn { background:#6a56ff; color:white; padding:14px 20px; border-radius:10px; text-decoration:none;
+               display:inline-block; margin-top:10px; font-size:1.1rem; }
+    .upload-box { background:#f3f0ff; padding:25px; border-radius:20px; text-align:center;
+                  border:2px dashed #9b8bff; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Tutorías Karen</h1>
+  <p>Clases de Matemáticas • Física • Química</p>
+</header>
+
+<div style="text-align:center; margin-top:20px;">
+  <div style="font-size:120px; color:#6a56ff; font-weight:bold;">π</div>
+</div>
+
+<section class="section">
+  <h2>Sobre mí</h2>
+  <p>Soy Karen Paola Suárez, estudiante universitaria de Matemáticas con más de 3 años de experiencia dando clases particulares.</p>
+</section>
+
+<section class="section">
+  <h2>Servicios</h2>
+  <div class="product-card">
+    <h3>Clases de Matemáticas, Física o Química</h3>
+    <p>Explicaciones claras, apoyo en tareas y preparación para exámenes.</p>
+    <p class="price">$25.000 COP la hora</p>
+    <a href="https://wa.me/573017326289" class="buy-btn">Agendar clase</a>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Medios de pago</h2>
+  <ul>
+    <li>💜 Nequi – 3017326289</li>
+    <li>🧡 Daviplata – 3017326289</li>
+    <li>💛 Bancolombia (pendiente)</li>
+    <li>❤️ Davivienda (pendiente)</li>
+  </ul>
+</section>
+
+<section class="section">
+  <h2>Subir archivo para cotización</h2>
+  <div class="upload-box">
+    <p>Sube un archivo con ejercicios y calcularé el valor automáticamente.</p>
+    <input type="file" id="fileInput">
+    <p id="result"></p>
+  </div>
+</section>
+
+<script>
+document.getElementById('fileInput').addEventListener('change', function() {
+  const file = this.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const text = e.target.result;
+    const ejercicios = (text.match(/\\n|\\./g) || []).length;
+    let dificultad = 'Básica';
+    let precio = 15000;
+    const avanzado = /(demostrar|justificar|desarrollo|proceso largo|explica en detalle)/i.test(text);
+    if (ejercicios <= 5) { dificultad='Básica'; precio=15000; }
+    else if (ejercicios > 5 && ejercicios <=10) { dificultad='Intermedia'; precio=20000; }
+    if (avanzado && ejercicios <=5) { dificultad='Alta'; precio=30000; }
+    else if (avanzado && ejercicios >5) { dificultad='Alta'; precio=30000 + (ejercicios-5)*3000; }
+    document.getElementById('result').innerHTML =
+      `Ejercicios: ${ejercicios}<br>Dificultad: ${dificultad}<br>Valor estimado: $${precio.toLocaleString()} COP`;
+  };
+  reader.readAsText(file);
+});
+</script>
+
+</body>
+</html>
