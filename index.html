@@ -70,23 +70,53 @@
 document.getElementById('fileInput').addEventListener('change', function() {
   const file = this.files[0];
   if (!file) return;
+
   const reader = new FileReader();
   reader.onload = function(e) {
-    const text = e.target.result;
-    const ejercicios = (text.match(/\\n|\\./g) || []).length;
-    let dificultad = 'Básica';
+    let text = e.target.result;
+
+    // Normalizar saltos de línea
+    text = text.replace(/\r/g, "");
+
+    // Contar ejercicios detectando 1., 2), 3 -, etc.
+    const ejercicios = (text.match(/\b\d+[\.\)\-]/g) || []).length || 1;
+
+    // Detección de dificultad avanzada
+    const avanzado = /(demostrar|justificar|desarrollo|proceso largo|explica en detalle|identidad|trigonométr)/i.test(text);
+
+    let dificultad = "Básica";
     let precio = 15000;
-    const avanzado = /(demostrar|justificar|desarrollo|proceso largo|explica en detalle)/i.test(text);
-    if (ejercicios <= 5) { dificultad='Básica'; precio=15000; }
-    else if (ejercicios > 5 && ejercicios <=10) { dificultad='Intermedia'; precio=20000; }
-    if (avanzado && ejercicios <=5) { dificultad='Alta'; precio=30000; }
-    else if (avanzado && ejercicios >5) { dificultad='Alta'; precio=30000 + (ejercicios-5)*3000; }
+
+    // Lógica de precios
+    if (avanzado) {
+      dificultad = "Alta";
+      if (ejercicios <= 5) {
+        precio = 30000;
+      } else {
+        precio = 30000 + (ejercicios - 5) * 3000;
+      }
+    } else {
+      if (ejercicios <= 5) {
+        precio = 15000;
+      } else if (ejercicios <= 10) {
+        dificultad = "Intermedia";
+        precio = 20000;
+      } else {
+        dificultad = "Intermedia";
+        precio = 20000 + (ejercicios - 10) * 2000;
+      }
+    }
+
     document.getElementById('result').innerHTML =
-      `Ejercicios: ${ejercicios}<br>Dificultad: ${dificultad}<br>Valor estimado: $${precio.toLocaleString()} COP`;
+      `Ejercicios detectados: ${ejercicios}<br>
+       Dificultad: ${dificultad}<br>
+       Valor estimado: $${precio.toLocaleString()} COP`;
   };
+
   reader.readAsText(file);
 });
 </script>
 
 </body>
 </html>
+
