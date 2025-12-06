@@ -4,26 +4,131 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tutorías Karen</title>
+
   <style>
-    body { margin:0; font-family:'Segoe UI',sans-serif; background:#f8f4ff; color:#333; }
-    header { background:linear-gradient(135deg,#7b5cff,#9b8bff); color:white; padding:60px 20px;
-             text-align:center; border-bottom-left-radius:40px; border-bottom-right-radius:40px; }
-    h1 { font-size:3rem; margin:0; font-weight:bold; }
-    .section { background:white; max-width:1000px; margin:30px auto; padding:40px; border-radius:20px;
-               box-shadow:0 4px 20px rgba(0,0,0,0.1); }
-    h2 { color:#6a56ff; margin-top:0; font-size:2rem; }
-    .product-card { background:#fff; padding:20px; border-radius:16px; box-shadow:0 3px 12px rgba(0,0,0,0.1);
-                    margin-bottom:20px; }
-    .price { font-size:1.4rem; color:#6a56ff; font-weight:bold; }
-    .buy-btn { background:#6a56ff; color:white; padding:14px 20px; border-radius:10px; text-decoration:none;
-               display:inline-block; margin-top:10px; font-size:1.1rem; }
-    .upload-box { background:#f3f0ff; padding:25px; border-radius:20px; text-align:center;
-                  border:2px dashed #9b8bff; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f8f4ff;
+      color: #333;
+    }
+
+    /* ----------------------------------- */
+    /*            HEADER BONITO            */
+    /* ----------------------------------- */
+    header {
+      position: relative;
+      background: linear-gradient(135deg, #6a56ff, #9b8bff);
+      color: white;
+      padding: 70px 20px;
+      text-align: center;
+      border-bottom-left-radius: 40px;
+      border-bottom-right-radius: 40px;
+      overflow: hidden;
+    }
+
+    /* Círculos geométricos */
+    header::before,
+    header::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.18);
+      filter: blur(3px);
+    }
+
+    header::before {
+      width: 180px;
+      height: 180px;
+      top: -40px;
+      left: -20px;
+    }
+
+    header::after {
+      width: 260px;
+      height: 260px;
+      bottom: -60px;
+      right: -40px;
+    }
+
+    /* Triángulo geométrico */
+    .triangulo {
+      width: 0;
+      height: 0;
+      border-left: 90px solid transparent;
+      border-right: 90px solid transparent;
+      border-top: 140px solid rgba(255, 255, 255, 0.15);
+      position: absolute;
+      top: 10px;
+      right: 40px;
+      transform: rotate(20deg);
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin: 0;
+      z-index: 2;
+      position: relative;
+    }
+
+    /* ----------------------------------- */
+    /*             CONTENIDO               */
+    /* ----------------------------------- */
+
+    .section {
+      background: white;
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #6a56ff;
+      margin-top: 0;
+      font-size: 2rem;
+    }
+
+    .product-card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+
+    .price {
+      font-size: 1.4rem;
+      color: #6a56ff;
+      font-weight: bold;
+    }
+
+    .buy-btn {
+      background: #6a56ff;
+      color: white;
+      padding: 14px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 1.1rem;
+    }
+
+    .upload-box {
+      background: #f3f0ff;
+      padding: 25px;
+      border-radius: 20px;
+      text-align: center;
+      border: 2px dashed #9b8bff;
+    }
   </style>
 </head>
+
 <body>
 
 <header>
+  <div class="triangulo"></div>
   <h1>Tutorías Karen</h1>
   <p>Clases de Matemáticas • Física • Química</p>
 </header>
@@ -39,12 +144,14 @@
 
 <section class="section">
   <h2>Servicios</h2>
+
   <div class="product-card">
     <h3>Clases de Matemáticas, Física o Química</h3>
     <p>Explicaciones claras, apoyo en tareas y preparación para exámenes.</p>
     <p class="price">$25.000 COP la hora</p>
     <a href="https://wa.me/573017326289" class="buy-btn">Agendar clase</a>
   </div>
+
 </section>
 
 <section class="section">
@@ -74,20 +181,17 @@ document.getElementById('fileInput').addEventListener('change', function() {
   const reader = new FileReader();
   reader.onload = function(e) {
     let text = e.target.result;
-
-    // Normalizar saltos de línea
     text = text.replace(/\r/g, "");
 
-    // Contar ejercicios detectando 1., 2), 3 -, etc.
+    // Contar ejercicios (1. 2) 3 - etc)
     const ejercicios = (text.match(/\b\d+[\.\)\-]/g) || []).length || 1;
 
-    // Detección de dificultad avanzada
+    // Dificultad avanzada
     const avanzado = /(demostrar|justificar|desarrollo|proceso largo|explica en detalle|identidad|trigonométr)/i.test(text);
 
     let dificultad = "Básica";
     let precio = 15000;
 
-    // Lógica de precios
     if (avanzado) {
       dificultad = "Alta";
       if (ejercicios <= 5) {
@@ -119,4 +223,3 @@ document.getElementById('fileInput').addEventListener('change', function() {
 
 </body>
 </html>
-
